@@ -12,20 +12,32 @@ $subject = $_POST["subject"];
 $messege = $_POST["message"];
 
 $mail = new PHPMailer(true); //Создаём экземпляр класса PHPMailer, для последующей работы с ним.
-
 try {
-    $mail->isSMTP();
-    $mail->SMTPAuth = true;
-    $mail->Host = 'smpt.gmail.com';
-    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-    $mail->Port = 587;
-    $mail->Username = '123ilyaexample@gmail.com';
-    $mail->Password = ''; //Пароль!!!!!!!!!!!!!!!!!!!!!!!
+    //Server settings
+    $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
+    $mail->isSMTP();                                            //Send using SMTP
+    $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
+    $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
+    $mail->Username   = '123ilyaexample@gmail.com'; //емэил, посредством которого отправляем сообщения
+    $mail->Password   = '';         //Пароль для приложений, генерируется дополнительно в настройках
+    //безопасности используемого аккаунта
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
+    $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
+    //Recipients
     $mail->setFrom($email, $name);
-    $mail->addAddress('123ilya@gmail.com');
+    $mail->addAddress('123ilya@gmail.com', 'Joe User');     //почтовый ящик, на который отправляем сообщение
+    
+
+    //Attachments
+    // $mail->addAttachment('/var/tmp/file.tar.gz');         //Add attachments
+    // $mail->addAttachment('/tmp/image.jpg', 'new.jpg');    //Optional name
+
+    //Content
+    $mail->isHTML(true);                                  //Set email format to HTML
     $mail->Subject = $subject;
-    $mail->Body = $messege;
+    $mail->Body    = $messege;
+
     $mail->send();
     echo 'Message has been sent';
 } catch (Exception $e) {
