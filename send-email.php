@@ -27,7 +27,7 @@ try {
     //Recipients
     $mail->setFrom($email, $name);
     $mail->addAddress('123ilya@gmail.com', 'Joe User');     //почтовый ящик, на который отправляем сообщение
-    
+
 
     //Attachments
     // $mail->addAttachment('/var/tmp/file.tar.gz');         //Add attachments
@@ -39,7 +39,7 @@ try {
     $mail->Body    = $messege;
 
     $mail->send();
-    echo 'Message has been sent';
+    header('Location: ./sent.html');
 } catch (Exception $e) {
     echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
 }
